@@ -94,7 +94,7 @@ WX_EXPORT_METHOD(@selector(goForward))
     _webview = (WXWebView *)self.view;
     _webview.delegate = self;
     _webview.allowsInlineMediaPlayback = YES;
-    _webview.scalesPageToFit = YES;
+    _webview.scalesPageToFit = NO;
     [_webview setBackgroundColor:[UIColor clearColor]];
     _webview.opaque = NO;
     _jsContext = [_webview valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
@@ -261,6 +261,8 @@ WX_EXPORT_METHOD(@selector(goForward))
     [info setObject:[self.webview stringByEvaluatingJavaScriptFromString:@"document.title"] ?: @"" forKey:@"title"];
     [info setObject:@(self.webview.canGoBack) forKey:@"canGoBack"];
     [info setObject:@(self.webview.canGoForward) forKey:@"canGoForward"];
+    [info setValue:@([[self.webview stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue] * 2
+     ) forKey:@"contentHeight"];
     return info;
 }
 
